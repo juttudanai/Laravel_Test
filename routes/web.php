@@ -31,6 +31,8 @@ Route::middleware([check_user::class])->group(function(){
     Route::get('/user',[UserController::class,'index'])->name('user');
     Route::post('/user/showdata',[UserController::class,'show'])->name('user.show');
     Route::post('/user/insert',[UserController::class,'insert'])->name('user.insert');
+    Route::post('/user/edit',[UserController::class,'edit'])->name('user.edit');
+    Route::post('/user/update',[UserController::class,'update'])->name('user.update');
     Route::post('/user/delete',[UserController::class,'delete'])->name('user.delete');
 });
 

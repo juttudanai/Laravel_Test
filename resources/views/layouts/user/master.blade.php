@@ -153,6 +153,96 @@
 
         });
 
+        $(document).on('click','#editData',function(){
+            let id = $(this).data('id');
+
+            $.ajax({
+                url: "{{ route('user.edit') }}",
+                method: "post",
+                data:{
+                    id : id,
+                     "_token": "{{ csrf_token() }}"
+                },
+                dataType: "json",
+                success:function(response){
+                    $.each( response.data, function( key, value ) {
+                        $('#id').val(value.id);
+                        $('#editProductname').val(value.name);
+                        $('#editDetail').val(value.description);
+                        $('#editQuantity').val(value.quantity);
+
+                        $('#ModalEditData').modal('show');
+                    });
+                }
+            });
+        });
+
+        $(document).on('submit','#form_update_data',function(e){
+            e.preventDefault();
+            let id = $('#id').val();
+            let name =  $('#editProductname').val();
+            let description =  $('#editDetail').val();
+            let quantity =  $('#editQuantity').val();
+
+            if (name != "") {
+                if (description != "") {
+                    if (quantity != "") {
+                        $.ajax({
+                            url: "{{ route('user.update') }}",
+                            method: "post",
+                            data:{
+                                id: id,
+                                name: name,
+                                description: description,
+                                quantity: quantity,
+                                "_token": "{{ csrf_token() }}"
+                            },
+                            dataType: "json",
+                            success:function(response){
+                                if (response.update_success) {
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        text: `${response.update_success}`,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then((result)=> {
+                                        $('#ModalEditData').modal('hide');
+                                        ShowData();
+                                    });
+                                }
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "error",
+                            text: "กรุณากรอกจำนวนสินค้า",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                }else{
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "error",
+                        text: "กรุณากรอกคำอธิบายสินค้า",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }else{
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    text: "กรุณากรอกชื่อสินค้า",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+
+        });
+
     </script>
 </body>
 </html>

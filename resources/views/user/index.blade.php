@@ -35,6 +35,7 @@
             <div class="card shadow" id="show_data">
 
             </div>
+            @include('user.modal.modalEditdata')
         </div>
     </div>
 @endsection

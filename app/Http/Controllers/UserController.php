@@ -41,7 +41,7 @@ class UserController extends Controller
                                 <td class="text-end">'.$value->quantity.'</td>
                                 <td class="text-center">
                                     <div class="btn-group shadow" role="group">
-                                        <button type="button" class="btn btn-warning btn-sm" data-id='.$value->id.'>Edit</button>
+                                        <button type="button" class="btn btn-warning btn-sm" id="editData" data-id='.$value->id.'>Edit</button>
                                         <button type="button" class="btn btn-danger btn-sm delete" data-id='.$value->id.' data-id2='.$value->name.'>Del</button>
                                     </div>
                                 </td>
@@ -83,6 +83,23 @@ class UserController extends Controller
         ]);
 
         return response()->json(['insert_success'=> "บันทึกข้อมูลสำเร็จ"]);
+    }
+
+    public function edit(Request $request){
+        $data = POST::all()->where('id',$request->id);
+        return response()->json(['data'=>$data]);
+    }
+
+    public function update(Request $request){
+        Post::find($request->id)->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'quantity' => $request->quantity
+        ]);
+
+        return response()->json(['update_success'=>"อัพเดตข้อมูลสำเร็จ"]);
+
+
     }
 
 
